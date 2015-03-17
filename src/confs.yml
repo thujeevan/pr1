@@ -1,0 +1,16 @@
+## YAML Template.
+---
+
+paypal : 
+    credentials : 
+        - 
+        - 
+    configs :
+        mode : sandbox
+        cache.enabled : true
+        
+braintree : 
+    credentials : 
+        - 
+        - 
+    configs : {}
