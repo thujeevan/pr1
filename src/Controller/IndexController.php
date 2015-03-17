@@ -64,9 +64,7 @@ class IndexController extends AbstractController {
 
         $processor = new Processor($provider);
 
-        try {
-            $result = $processor->process($postParams);
-        } catch (Exception $ex) {
+        if (FALSE === ($result = $processor->process($postParams))) {
             $app['session']->getFlashBag()->add('messages', ['danger', 'Error in processing transaction, please check the details and retry']);
             return $app->redirect($app['url_generator']->generate('index.index'));
         }

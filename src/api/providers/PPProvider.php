@@ -2,6 +2,7 @@
 
 namespace pr1\api\providers;
 
+use Exception;
 use PayPal\Api\Amount;
 use PayPal\Api\CreditCard;
 use PayPal\Api\FundingInstrument;
@@ -76,11 +77,14 @@ class PPProvider implements Processable {
         $payment->setPayer($payer);
         $payment->setTransactions(array($transaction));
         
-        $payment->create($this->apiContext);
-        
-        // TODO : persist to db
-        
-        return "Payment completed for Id: {$payment->getId()} \n Payment status: {$payment->getState()}";
+        try {
+            $payment->create($this->apiContext);
+            // TODO : persist to db
+
+            return "Payment completed for Id: {$payment->getId()} \n Payment status: {$payment->getState()}";
+        } catch (Exception $exc) {
+            return FALSE;
+        }
     }
 
 }
