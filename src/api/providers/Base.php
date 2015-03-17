@@ -12,7 +12,7 @@ use pr1\api\processor\Processable;
  */
 abstract class Base implements Processable {
 
-    const TABLE_NAME = 'pr1transactions';
+    const TABLE_NAME = 'pr1orders';
     
     protected function writeToDb($fields) {
         try {
