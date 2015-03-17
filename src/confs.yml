@@ -1,13 +1,20 @@
 ## YAML Template.
 ---
 
+db : 
+    driver : pdo_mysql
+    host : localhost
+    dbname : pr1
+    user : root
+    password : root
+    charset : utf8
+
 paypal : 
     credentials : 
         - 
         - 
     configs :
         mode : sandbox
-        cache.enabled : true
         
 braintree : 
     credentials : 

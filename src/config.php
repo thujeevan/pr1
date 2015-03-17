@@ -42,17 +42,6 @@ $app->register(new SessionServiceProvider(), array(
     )
 ));
 
-$app->register(new DoctrineServiceProvider(), array(
-    'db.options' => [
-        'driver' => 'pdo_mysql',
-        'host' => 'localhost',
-        'dbname' => 'pr1',
-        'user' => 'root',
-        'password' => 'root',
-        'charset' => 'utf8',
-    ],
-));
-
 try {
     $file = __DIR__ . '/confs.yml';
     if (!is_readable($file)) {
@@ -64,12 +53,15 @@ try {
     die('Unable to load configuration file, please verify');
 }
 
+$app->register(new DoctrineServiceProvider(), array(
+    'db.options' => $configs['db']
+));
 
-$app['ppConf'] = function($app) use ($configs){
+$app['ppConf'] = function() use ($configs){
     return $configs['paypal'];
 };
 
-$app['btConf'] = function($app) use ($configs){
+$app['btConf'] = function() use ($configs){
     return $configs['braintree'];
 };
 
