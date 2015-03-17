@@ -1,11 +1,6 @@
 {% extends 'common/layout.html.twig' %}
 
 {% block content %}
-<div class="jumbotron">
-    <h1>Payment gateway</h1>
-    <p class="lead">Do your payment with paypal or braintree</p>
-</div>
-
 <div>
     {% if messages %}
         {% for message in messages %}
@@ -18,81 +13,127 @@
 </div>
 
 <div class="row marketing">
-    <form class="form-horizontal" action="{{ path('index.process') }}" method="post" id="payment-form">
-        <fieldset>
-            <legend>Order</legend>
-            <div class="form-group">
-                <label for="fullname" class="col-sm-3 control-label">Full Name</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Full name">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="price" class="col-sm-3 control-label">Price</label>
-                <div class="col-sm-9">                    
-                    <div class="row">
-                        <div class="col-xs-8">
-                            <input type="text" class="form-control" id="price" name="price" placeholder="Price">
-                        </div>
-                        <div class="col-xs-4">
-                            <select class="form-control" id="currency" name="currency">
-                                {% for cur in currencies %}
-                                    <option value="{{ cur }}">{{ cur | upper }}</option>
-                                {% endfor %}
-                            </select>                   
-                        </div>
-                    </div>                    
-                </div>
-            </div>
-        </fieldset>
-        <fieldset>
-            <legend>Payment</legend>
-            <div class="form-group">
-                <label class="col-sm-3 control-label" for="card-holder-name">Name on Card</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control" name="card-holder-name" id="card-holder-name" placeholder="Card Holder's Name" autocomplete="off">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label" for="card-number">Card Number</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control" name="card-number" id="card-number" placeholder="Credit Card Number" autocomplete="off">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label" for="expiry-month">Expiration Date</label>
-                <div class="col-sm-9">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <select class="form-control col-sm-2" name="expiry-month" id="expiry-month">
-                                <option>Month</option>
-                                {% for key , month in months %}
-                                    <option value="{{ key }}">{{ month }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-xs-3">
-                            <select class="form-control" name="expiry-year">
-                                {% for year in years %}
-                                    <option value="{{ year }}">{{ 20~year }}</option>
-                                {% endfor %}
-                            </select>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#payment" aria-controls="payment" role="tab" data-toggle="tab">Payment</a></li>
+        <li role="presentation"><a href="#orders" aria-controls="orders" role="tab" data-toggle="tab">Recent Orders</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="payment">
+            <form class="form-horizontal" action="{{ path('index.process') }}" method="post" id="payment-form">
+                <fieldset>
+                    <legend>Order</legend>
+                    <div class="form-group">
+                        <label for="fullname" class="col-sm-3 control-label">Full Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Full name">
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label" for="cvv">Card CVV</label>
-                <div class="col-sm-3">
-                    <input type="text" class="form-control" name="cvv" id="cvv" placeholder="Security Code" autocomplete="off">
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-9">
-                    <button type="submit" class="btn btn-success">Pay Now</button>
-                </div>
-            </div>
-        </fieldset>
-    </form>
+                    <div class="form-group">
+                        <label for="price" class="col-sm-3 control-label">Price</label>
+                        <div class="col-sm-9">                    
+                            <div class="row">
+                                <div class="col-xs-8">
+                                    <input type="text" class="form-control" id="price" name="price" placeholder="Price">
+                                </div>
+                                <div class="col-xs-4">
+                                    <select class="form-control" id="currency" name="currency">
+                                        {% for cur in currencies %}
+                                            <option value="{{ cur }}">{{ cur | upper }}</option>
+                                        {% endfor %}
+                                    </select>                   
+                                </div>
+                            </div>                    
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Payment</legend>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="card-holder-name">Name on Card</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="card-holder-name" id="card-holder-name" placeholder="Card Holder's Name" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="card-number">Card Number</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="card-number" id="card-number" placeholder="Credit Card Number" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="expiry-month">Expiration Date</label>
+                        <div class="col-sm-9">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <select class="form-control col-sm-2" name="expiry-month" id="expiry-month">
+                                        <option>Month</option>
+                                        {% for key , month in months %}
+                                            <option value="{{ key }}">{{ month }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-xs-3">
+                                    <select class="form-control" name="expiry-year">
+                                        {% for year in years %}
+                                            <option value="{{ year }}">{{ 20~year }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="cvv">Card CVV</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="cvv" id="cvv" placeholder="Security Code" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <button type="submit" class="btn btn-success">Pay Now</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="orders">
+            <table class="table table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Payment Id</th>
+                        <th>Provider</th>
+                        <th>Intent</th>
+                        <th>Payment method</th>
+                        <th>State</th>
+                        <th>Amount</th>
+                        <th>Currency</th>
+                        <th>Description</th>
+                        <th>Creted time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for id, order in recentOrders %}
+                        <tr>
+                            <td>{{ id + 1 }}</td>
+                            <td>{{ order.payment_id }}</td>
+                            <td>{{ order.payment_provider }}</td>
+                            <td>{{ order.intent }}</td>
+                            <td>{{ order.payment_method }}</td>
+                            <td>{{ order.state }}</td>
+                            <td>{{ order.amount }}</td>
+                            <td>{{ order.currency }}</td>
+                            <td>{{ order.description }}</td>
+                            <td>{{ order.created_time }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
 </div>
 {% endblock %}

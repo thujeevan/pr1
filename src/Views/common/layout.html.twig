@@ -14,7 +14,6 @@
         <style>            
             /* Space out content a bit */
             body {
-                padding-top: 20px;
                 padding-bottom: 20px;
             }
 
@@ -45,14 +44,8 @@
                 border-top: 1px solid #e5e5e5;
             }
 
-            /* Customize container */
-            @media (min-width: 768px) {
-                .container {
-                    max-width: 730px;
-                }
-            }
             .container-narrow > hr {
-                margin: 30px 0;
+                    margin: 30px 0;
             }
 
             /* Main marketing message and sign up button */
@@ -67,7 +60,7 @@
 
             /* Supporting marketing content */
             .marketing {
-                margin: 40px 0;
+                margin: 20px 0;
             }
             .marketing p + h4 {
                 margin-top: 28px;
@@ -88,7 +81,7 @@
                 }
                 /* Remove the bottom border on the jumbotron for visual effect */
                 .jumbotron {
-                    padding: 20px;
+                    padding: 10px;
                     border-bottom: 0;
                 }
             }
@@ -115,55 +108,54 @@
 	<script type="text/javascript" src="{{ app.request.basepath }}/assets/jquery-validation/dist/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="{{ app.request.basepath }}/assets/jquery-validation/dist/additional-methods.min.js"></script>
         
-        <script>
-            
-            var $form = $('#payment-form');
-            
-            /* Form validation */
-            $.validator.addMethod("month", function(value, element) {
-              return this.optional(element) || /^(01|02|03|04|05|06|07|08|09|10|11|12)$/.test(value);
-            }, "Please specify a valid 2-digit month.");
+        <script>            
+        var $form = $('#payment-form');
 
-            $.validator.addMethod("year", function(value, element) {
-              return this.optional(element) || /^[0-9]{2}$/.test(value);
-            }, "Please specify a valid 2-digit year.");
+        /* Form validation */
+        $.validator.addMethod("month", function(value, element) {
+          return this.optional(element) || /^(01|02|03|04|05|06|07|08|09|10|11|12)$/.test(value);
+        }, "Please specify a valid 2-digit month.");
 
-            var validator = $form.validate({
-                rules: {
-                    fullname : {
-                        required : true
-                    },
-                    price : {
-                        required : true,
-                        number: true
-                    },
-                    'card-holder-name' : {
-                        required : true
-                    },
-                    'card-number': {
-                        required: true,
-                        creditcard: true,
-                        digits: true
-                    },
-                    'expiry-month': {
-                        required: true,
-                        month: true
-                    },
-                    cvv: {
-                        required: true,
-                        digits: true
-                    }
+        $.validator.addMethod("year", function(value, element) {
+          return this.optional(element) || /^[0-9]{2}$/.test(value);
+        }, "Please specify a valid 2-digit year.");
+
+        var validator = $form.validate({
+            rules: {
+                fullname : {
+                    required : true
                 },
-                highlight: function(element) {
-                    $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+                price : {
+                    required : true,
+                    number: true
                 },
-                unhighlight: function(element) {
-                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+                'card-holder-name' : {
+                    required : true
                 },
-                errorPlacement: function(error, element) {
-                    
+                'card-number': {
+                    required: true,
+                    creditcard: true,
+                    digits: true
+                },
+                'expiry-month': {
+                    required: true,
+                    month: true
+                },
+                cvv: {
+                    required: true,
+                    digits: true
                 }
-            });
+            },
+            highlight: function(element) {
+                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            unhighlight: function(element) {
+                $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+            },
+            errorPlacement: function(error, element) {
+
+            }
+        });
         </script>
     </body>
 </html>
