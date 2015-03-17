@@ -18,7 +18,8 @@
         "paypal/rest-api-sdk-php" : "1.*",
         "twig/twig": "~1.18",
         "symfony/twig-bridge": "~2.6",
-        "doctrine/dbal": "~2.2"
+        "doctrine/dbal": "~2.2",
+        "braintree/braintree_php": "2.35.2"
     },
     "autoload": {
         "psr-4": {
