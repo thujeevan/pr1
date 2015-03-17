@@ -12,6 +12,7 @@ use Exception;
 use pr1\api\providers\BTProvider;
 use pr1\api\providers\PPProvider;
 use Silex\Application;
+use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
@@ -41,6 +42,17 @@ $app->register(new SessionServiceProvider(), array(
     )
 ));
 
+$app->register(new DoctrineServiceProvider(), array(
+    'db.options' => [
+        'driver' => 'pdo_mysql',
+        'host' => 'localhost',
+        'dbname' => 'pr1',
+        'user' => 'root',
+        'password' => 'root',
+        'charset' => 'utf8',
+    ],
+));
+
 try {
     $file = __DIR__ . '/confs.yml';
     if (!is_readable($file)) {
@@ -62,11 +74,11 @@ $app['btConf'] = function($app) use ($configs){
 };
 
 $app['provider.pp'] = $app->share(function($app){
-    return new PPProvider($app['ppConf']);
+    return new PPProvider($app['ppConf'], $app['db']);
 });
 
 $app['provider.bt'] = $app->share(function($app){
-    return new BTProvider($app['btConf']);
+    return new BTProvider($app['btConf'], $app['db']);
 });
 
 # binding the routes
