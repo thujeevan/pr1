@@ -1,0 +1,35 @@
+{
+    "name": "thujeevan/pr1",
+    "description": "payment gateway",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "thujeevan",
+            "email": "thujee@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php"    : "~5.4",
+        "silex/silex": "~1.2",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mysql": "*",
+        "paypal/rest-api-sdk-php" : "1.*",
+        "twig/twig": "~1.18",
+        "symfony/twig-bridge": "~2.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "pr1\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "pr1\\Test\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.4.*"
+    }
+}

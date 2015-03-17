@@ -1,0 +1,16 @@
+{
+  "name": "pr1",
+  "version": "0.1.0",
+  "homepage": "https://github.com/thujeevan/pr1",
+  "authors": [
+    "Thujeevan Thurairajah"
+  ],
+  "description": "Library",
+  "license": "MIT",
+  "private": true,
+  "ignore": [],
+  "dependencies": {
+    "bootstrap": "~3.1.1",
+    "jquery-validation": "~1.13.1"
+  }
+}
