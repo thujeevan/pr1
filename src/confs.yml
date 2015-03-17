@@ -18,6 +18,13 @@ paypal :
         
 braintree : 
     credentials : 
-        - 
-        - 
-    configs : {}
+        environment : sandbox
+        merchantId : 
+        publicKey :  
+        privateKey :  
+        
+    merchant_accounts :
+        hkd : 
+        sgd : 
+        thb : 
+        usd : 
