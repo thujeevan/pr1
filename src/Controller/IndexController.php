@@ -52,7 +52,7 @@ class IndexController extends AbstractController {
         $provider = NULL;
 
         if (Util::isAmex($cardNo) && $currency !== 'usd') {
-            $app['session']->getFlashBag()->add('messages', ['danger',  'AMEX is only possible with USD' ]);
+            $app['session']->getFlashBag()->add('messages', ['danger', 'AMEX is only possible with USD']);
             return $app->redirect($app['url_generator']->generate('index.index'));
         }
 
@@ -63,15 +63,15 @@ class IndexController extends AbstractController {
         }
 
         $processor = new Processor($provider);
-        
+
         try {
-            $processor->process($postParams);
+            $result = $processor->process($postParams);
         } catch (Exception $ex) {
-            $app['session']->getFlashBag()->add('messages',['danger', 'Error in processing transaction, please check the details and retry' ]);
+            $app['session']->getFlashBag()->add('messages', ['danger', 'Error in processing transaction, please check the details and retry']);
             return $app->redirect($app['url_generator']->generate('index.index'));
         }
 
-        $app['session']->getFlashBag()->add('messages',['success',  'Successfully processed transaction' ]);
+        $app['session']->getFlashBag()->add('messages', ['info', $result]);
         return $app->redirect($app['url_generator']->generate('index.index'));
     }
 
@@ -82,17 +82,10 @@ class IndexController extends AbstractController {
 
         $index->before(function (Request $request) use ($app) {
             $post = $request->request->all();
-            self::sanitize($post);
+            Util::sanitize($post);
             $request->request->replace($post);
         });
 
         return $index;
     }
-
-    public static function sanitize(array &$arr, $filter = FILTER_SANITIZE_STRING, $options = FILTER_FLAG_NO_ENCODE_QUOTES) {
-        array_walk_recursive($arr, function(&$value, $key) use ($filter, $options) {
-            $value = filter_var(trim($value), $filter, $options);
-        });
-    }
-
 }

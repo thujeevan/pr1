@@ -32,4 +32,22 @@ class Util {
         return $valid;
     }
 
+    public static function getCardType($cardNo) {
+        $cards = array(
+            "visa" => "(4\d{12}(?:\d{3})?)",
+            "amex" => "(3[47]\d{13})",
+            "mastercard" => "(5[1-5]\d{14})"
+        );
+        $names = array("visa", "amex", "mastercard");
+        $matches = array();
+        $pattern = "#^(?:" . implode("|", $cards) . ")$#";
+        $result = preg_match($pattern, str_replace(" ", "", $cardNo), $matches);
+        return ($result > 0) ? $names[sizeof($matches) - 2] : false;
+    }
+    
+    public static function sanitize(array &$arr, $filter = FILTER_SANITIZE_STRING, $options = FILTER_FLAG_NO_ENCODE_QUOTES) {
+        array_walk_recursive($arr, function(&$value, $key) use ($filter, $options) {
+            $value = filter_var(trim($value), $filter, $options);
+        });
+    }
 }
