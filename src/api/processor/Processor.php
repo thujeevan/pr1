@@ -19,4 +19,8 @@ class Processor {
         return $this->paymentProvider->process($data);
     }
 
+    public static function getRecentOrders($db, $limit = 30) {
+        $recentOrders = $db->fetchAll('select * from pr1orders order by created_time desc limit '.$limit);
+        return $recentOrders;
+    }
 }

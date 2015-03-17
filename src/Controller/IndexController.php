@@ -2,7 +2,6 @@
 
 namespace pr1\Controller;
 
-use Exception;
 use pr1\api\processor\Processor;
 use pr1\api\Util;
 use pr1\Controller\Base\AbstractController;
@@ -27,9 +26,17 @@ class IndexController extends AbstractController {
             '11' => 'November',
             '12' => 'December'];
         $years = range(15, 25);
+        
+        $recentOrders = Processor::getRecentOrders($app['db']);
 
         $messages = $app['session']->getFlashBag()->get('messages');
-        return $app['twig']->render('home.html.twig', ['currencies' => $currencies, 'months' => $months, 'years' => $years, 'messages' => $messages]);
+        return $app['twig']->render('home.html.twig', [
+                    'currencies' => $currencies,
+                    'months' => $months,
+                    'years' => $years,
+                    'messages' => $messages,
+                    'recentOrders' => $recentOrders,
+        ]);
     }
 
     public function process(Application $app, Request $request) {
