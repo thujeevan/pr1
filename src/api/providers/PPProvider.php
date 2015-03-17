@@ -11,7 +11,6 @@ use PayPal\Api\Payment;
 use PayPal\Api\Transaction;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Rest\ApiContext;
-use pr1\api\processor\Processable;
 use pr1\api\Util;
 
 /**
@@ -19,7 +18,7 @@ use pr1\api\Util;
  *
  * @author Thurairajah Thujeevan 
  */
-class PPProvider implements Processable {
+class PPProvider extends Base {
 
     protected $apiContext;
     protected $db;

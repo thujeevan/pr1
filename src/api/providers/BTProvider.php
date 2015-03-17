@@ -4,14 +4,13 @@ namespace pr1\api\providers;
 
 use Braintree_Configuration;
 use Braintree_Transaction;
-use pr1\api\processor\Processable;
 
 /**
  * Braintree payment process provider
  *
  * @author Thurairajah Thujeevan
  */
-class BTProvider implements Processable {
+class BTProvider extends Base {
     
     protected $conf;
     protected $db;
