@@ -2,6 +2,9 @@
 
 namespace pr1\Controller;
 
+use Exception;
+use pr1\api\processor\Processor;
+use pr1\api\Util;
 use pr1\Controller\Base\AbstractController;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,11 +28,51 @@ class IndexController extends AbstractController {
             '12' => 'December'];
         $years = range(15, 25);
 
-        return $app['twig']->render('home.html.twig', ['currencies' => $currencies, 'months' => $months, 'years' => $years]);
+        $messages = $app['session']->getFlashBag()->get('messages');
+        return $app['twig']->render('home.html.twig', ['currencies' => $currencies, 'months' => $months, 'years' => $years, 'messages' => $messages]);
     }
 
     public function process(Application $app, Request $request) {
         $postParams = $request->request->all();
+
+        $cardNo = $postParams['card-number'];
+        $currency = $postParams['currency'];
+
+        if (!(strlen($cardNo) && Util::isValidCardNo($cardNo))) {
+            $app['session']->getFlashBag()->add('messages', ['danger', 'Please provide valid card number']);
+            return $app->redirect($app['url_generator']->generate('index.index'));
+        }
+
+        $currencies = ['usd', 'eur', 'thb', 'hkd', 'sgd', 'aud'];
+        if (!in_array($currency, $currencies)) {
+            $app['session']->getFlashBag()->add('messages', ['danger', 'Please provide valid currency format']);
+            return $app->redirect($app['url_generator']->generate('index.index'));
+        }
+
+        $provider = NULL;
+
+        if (Util::isAmex($cardNo) && $currency !== 'usd') {
+            $app['session']->getFlashBag()->add('messages', ['danger',  'AMEX is only possible with USD' ]);
+            return $app->redirect($app['url_generator']->generate('index.index'));
+        }
+
+        if (Util::isAmex($cardNo) || in_array($currency, ['usd', 'eur', 'aud'])) {
+            $provider = $app['provider.pp'];
+        } else {
+            $provider = $app['provider.bt'];
+        }
+
+        $processor = new Processor($provider);
+        
+        try {
+            $processor->process($postParams);
+        } catch (Exception $ex) {
+            $app['session']->getFlashBag()->add('messages',['danger', 'Error in processing transaction, please check the details and retry' ]);
+            return $app->redirect($app['url_generator']->generate('index.index'));
+        }
+
+        $app['session']->getFlashBag()->add('messages',['success',  'Successfully processed transaction' ]);
+        return $app->redirect($app['url_generator']->generate('index.index'));
     }
 
     public function connect(Application $app) {
