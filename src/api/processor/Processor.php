@@ -16,7 +16,7 @@ class Processor {
     }
 
     public function process($data) {
-        $this->paymentProvider->process($data);
+        return $this->paymentProvider->process($data);
     }
 
 }
