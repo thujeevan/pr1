@@ -49,7 +49,21 @@ class BTProvider extends Base {
         );
 
         if ($result->success) {
-            // TODO : persist data 
+            
+            $fields = [
+                'payment_id' => $result->transaction->id,
+                'payment_provider' => 'braintree',
+                'intent' => 'sale',
+                'payment_method' => 'credit_card',
+                'state' => $result->transaction->status,
+                'amount' => $data['price'],
+                'currency' => strtoupper($data['currency']),
+                'description' => 'direct payment with credit card',
+                'created_time' => $result->transaction->createdAt->format('Y-m-d H:i:s'),
+            ];
+            
+            $this->writeToDb($fields);
+            
             return "Transaction success! \n Transaction Id: " . $result->transaction->id;
         } else if ($result->transaction) {
             return FALSE;

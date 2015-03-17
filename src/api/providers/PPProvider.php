@@ -78,7 +78,20 @@ class PPProvider extends Base {
         
         try {
             $payment->create($this->apiContext);
-            // TODO : persist to db
+            
+            $fields = [
+                'payment_id' => $payment->getId(),
+                'payment_provider' => 'paypal',
+                'intent' => 'sale',
+                'payment_method' => 'credit_card',
+                'state' => $payment->getState(),
+                'amount' => $data['price'],
+                'currency' => strtoupper($data['currency']),
+                'description' => 'direct payment with credit card',
+                'created_time' => date('Y-m-d H:i:s', strtotime($payment->getCreateTime())),
+            ];
+            
+            $this->writeToDb($fields);
 
             return "Payment completed for Id: {$payment->getId()} \n Payment status: {$payment->getState()}";
         } catch (Exception $exc) {
