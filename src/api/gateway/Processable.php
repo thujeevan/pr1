@@ -1,5 +1,5 @@
 <?php
-namespace pr1\api\processor;
+namespace pr1\api\gateway;
 
 /**
  *

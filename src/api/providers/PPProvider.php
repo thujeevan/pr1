@@ -20,11 +20,10 @@ use pr1\api\Util;
  */
 class PPProvider extends Base {
 
+    protected $message;
     protected $apiContext;
-    protected $db;
 
-    public function __construct($conf, $db) {
-        $this->db = $db;
+    public function __construct($conf) {
         $this->setupContext($conf);
     }
 
@@ -78,7 +77,7 @@ class PPProvider extends Base {
         
         try {
             $payment->create($this->apiContext);
-            
+
             $fields = [
                 'payment_id' => $payment->getId(),
                 'payment_provider' => 'paypal',
@@ -90,13 +89,14 @@ class PPProvider extends Base {
                 'description' => 'direct payment with credit card',
                 'created_time' => date('Y-m-d H:i:s', strtotime($payment->getCreateTime())),
             ];
-            
-            $this->writeToDb($fields);
-
-            return "Payment completed for Id: {$payment->getId()} \n Payment status: {$payment->getState()}";
+            return $fields;
         } catch (Exception $exc) {
+            $this->message = 'Error in processing transaction, please check the details and retry';
             return FALSE;
         }
     }
 
+    public function getMessage(){
+        return $this->message;
+    }
 }

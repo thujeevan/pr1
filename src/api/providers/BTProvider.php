@@ -11,16 +11,15 @@ use Braintree_Transaction;
  * @author Thurairajah Thujeevan
  */
 class BTProvider extends Base {
-    
-    protected $conf;
-    protected $db;
 
-    public function __construct($conf, $db) {
+    protected $message;
+    protected $conf;
+
+    public function __construct($conf) {
         $this->conf = $conf;
-        $this->db = $db;
         $this->setupContext($conf);
     }
-    
+
     protected function setupContext($conf) {
         Braintree_Configuration::environment($conf['credentials']['environment']);
         Braintree_Configuration::merchantId($conf['credentials']['merchantId']);
@@ -49,7 +48,7 @@ class BTProvider extends Base {
         );
 
         if ($result->success) {
-            
+
             $fields = [
                 'payment_id' => $result->transaction->id,
                 'payment_provider' => 'braintree',
@@ -61,15 +60,23 @@ class BTProvider extends Base {
                 'description' => 'direct payment with credit card',
                 'created_time' => $result->transaction->createdAt->format('Y-m-d H:i:s'),
             ];
-            
-            $this->writeToDb($fields);
-            
-            return "Transaction success! \n Transaction Id: " . $result->transaction->id;
+
+            return $fields;
         } else if ($result->transaction) {
+            $this->message = "Error: " . $result->message . "\n" . "Code: " . $result->transaction->processorResponseCode;
             return FALSE;
         } else {
+            $str = "Validation failures:\n";
+            foreach (($result->errors->deepAll()) as $error) {
+                $str .= "- " . $error->message . "\n";
+            }
+            $this->message = $str;
             return FALSE;
         }
+    }
+
+    public function getMessage() {
+        return $this->message;
     }
 
 }
