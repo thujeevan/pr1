@@ -28,7 +28,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "pr1\\Test\\": "tests/"
+            "pr1\\Test\\": "tests/integration/"
         }
     },
     "require-dev": {

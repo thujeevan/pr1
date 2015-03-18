@@ -46,3 +46,9 @@ sample `/etc/hosts`
 ```
 
 in browser `http://pr1`
+
+
+pr1 - Run tests
+---
+
+ `vendor/bin/phpunit tests`
